@@ -45,6 +45,7 @@ public class GameUnoController {
     private boolean humanCanSayONEToMachine=true;
     private boolean humanCanSayONE=true;
     private ThreadWinGame threadWinGame;
+    private Card cardTable;
 
     /**
      * Initializes the controller.
@@ -84,6 +85,13 @@ public class GameUnoController {
         this.table = new Table();
         this.gameUno = new GameUno(this.humanPlayer, this.machinePlayer, this.deck, this.table);
         this.posInitCardToShow = 0;
+
+        cardTable= deck.takeCard();
+        tableImageView.setImage(cardTable.getImage());
+        String cardValue=cardTable.getValue();
+        String cardColor=cardTable.getColor();
+        System.out.println(cardValue+" "+cardColor);
+
     }
 
     /**
@@ -98,7 +106,7 @@ public class GameUnoController {
             ImageView cardImageView = card.getCard();
 
             cardImageView.setOnMouseClicked((MouseEvent event) -> {
-                if(playHuman){
+                if((cardTable.getValue()==card.getValue() || cardTable.getColor()==card.getColor() || card.getValue()=="WILD"||card.getValue()=="+4") && playHuman){
                     // Aqui deberian verificar si pueden en la tabla jugar esa carta
                     gameUno.playCard(card);
                     tableImageView.setImage(card.getImage());
@@ -106,6 +114,8 @@ public class GameUnoController {
                     threadPlayMachine.setHasPlayerPlayed(true);
                     printCardsHumanPlayer();
                     playHuman=false;
+                    cardTable=card;
+                    System.out.println(cardTable.getColor()+" "+card.getValue());
                 }
             });
 
@@ -234,5 +244,13 @@ public class GameUnoController {
     @FXML
     void onHandleButtonExit(ActionEvent event) {
         GameUnoStage.deleteInstance();
+    }
+
+    public Card getCardTable() {
+        return cardTable;
+    }
+
+    public void setCardTable(Card card){
+        this.cardTable=card;
     }
 }
