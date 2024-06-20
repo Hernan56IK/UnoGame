@@ -3,10 +3,16 @@ package org.example.eiscuno.controller;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.example.eiscuno.model.card.Card;
 import org.example.eiscuno.model.deck.Deck;
 import org.example.eiscuno.model.game.GameUno;
@@ -46,6 +52,8 @@ public class GameUnoController {
     private boolean humanCanSayONE=true;
     private ThreadWinGame threadWinGame;
     private Card cardTable;
+    private boolean machineSayOne=false;
+    private boolean takecard=true;
 
     /**
      * Initializes the controller.
@@ -111,13 +119,16 @@ public class GameUnoController {
                     gameUno.playCard(card);
                     tableImageView.setImage(card.getImage());
                     humanPlayer.removeCard(findPosCardsHumanPlayer(card));
-                    threadPlayMachine.setHasPlayerPlayed(true);
                     printCardsHumanPlayer();
                     playHuman=false;
                     cardTable=card;
+                    handleCardEffect(card);
                     System.out.println(cardTable.getColor()+" "+card.getValue());
+                    threadPlayMachine.setHasPlayerPlayed(true);
+                    takecard=true;
                 }
             });
+
 
             this.gridPaneCardsPlayer.add(cardImageView, i, 0);
         }
@@ -129,10 +140,24 @@ public class GameUnoController {
      */
     public void printCardsMachine() {
         Platform.runLater(() -> {
+            int columns;
+            int cols = gridPaneCardsMachine.getColumnConstraints().size();
             this.gridPaneCardsMachine.getChildren().clear();
-            Card[] currentVisibleCardsMachinePlayer = this.gameUno.getCurrentVisibleCardsMachinePlayer(this.posInitCardToShow);
+            Card[] currentVisibleCardsMachinePlayer = this.gameUno.getCurrentVisibleCardsMachinePlayer(0);
+            int numcards = currentVisibleCardsMachinePlayer .length;
 
-            for (int i = 0; i < currentVisibleCardsMachinePlayer .length; i++) {
+            if(numcards>cols){
+                columns=cols;
+            }else{
+                columns=numcards;
+            }
+
+            for (int i = 0; i < currentVisibleCardsMachinePlayer.length; i++) {
+                Card card = currentVisibleCardsMachinePlayer[i];
+                System.out.println(card.getValue()+" "+card.getColor()+" "+i);
+            }
+
+            for (int i = 0; i < columns; i++) {
 
                 String imageCover = "file:src/main/resources/org/example/eiscuno/cards-uno/card_uno.png";
                 Image cardImage = new Image(imageCover);
@@ -203,12 +228,39 @@ public class GameUnoController {
      */
     @FXML
     void onHandleTakeCard(ActionEvent event) {
-        humanPlayer.addCard(deck.takeCard());
-        printCardsHumanPlayer();
-        playHuman=true;
-        humanCanSayONE=true;
-        threadSingUNOMachine.setMachineCanSayOneToPlayer(true);
+        System.out.println(takecard);
+        if (playHuman && takecard){
+            humanPlayer.addCard(deck.takeCard());
+            printCardsHumanPlayer();
+            if(!canPutCard(cardTable)){
+                takecard=true;
+                playHuman=false;
+                threadPlayMachine.setHasPlayerPlayed(true);
+                System.out.println("entra por no poder");
+                System.out.println(takecard);
+            }
+            humanCanSayONE=true;
+            threadSingUNOMachine.setMachineCanSayOneToPlayer(true);
+            takecard=false;
+        }else if(machineSayOne){
+            humanPlayer.addCard(deck.takeCard());
+            printCardsHumanPlayer();
+            playHuman=false;
+            threadPlayMachine.setHasPlayerPlayed(true);
+            takecard=true;
+        }
 
+    }
+
+    private boolean canPutCard(Card tableCard){
+        boolean can=false;
+        for(int i=0; i<humanPlayer.getCardsPlayer().size();i++){
+            Card card = humanPlayer.getCard(i);
+            if(tableCard.getValue()==card.getValue() || tableCard.getColor()==card.getColor()|| card.getValue()=="WILD"||card.getValue()=="+4") {
+                can = true;
+            }
+        }
+        return can;
     }
 
     /**
@@ -252,5 +304,87 @@ public class GameUnoController {
 
     public void setCardTable(Card card){
         this.cardTable=card;
+    }
+
+    private void handleCardEffect(Card card) {
+        String effect = card.getEffect();
+
+        switch (effect) {
+            case "WILD":
+                chooseColor();
+            case "+4":
+                chooseColor();
+                if (effect.equals("+4")) {
+                    //opponentDrawCards(4);
+                }
+                break;
+            case "+2":
+                //opponentDrawCards(2);
+                break;
+            case "SKIP":
+                //skipOpponentTurn();
+                break;
+            default:
+                // No hay efecto especial
+                break;
+        }
+    }
+
+    public class ColorPickerDialog {
+        private String selectedColor;
+
+        public String getSelectedColor() {
+            return selectedColor;
+        }
+
+        public void display() {
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.setTitle("Choose a Color");
+
+            Button redButton = createColorButton("RED");
+            Button greenButton = createColorButton("GREEN");
+            Button blueButton = createColorButton("BLUE");
+            Button yellowButton = createColorButton("YELLOW");
+
+            HBox hbox = new HBox(10, redButton, greenButton, blueButton, yellowButton);
+            hbox.setPadding(new Insets(15));
+            Scene scene = new Scene(hbox);
+
+            dialogStage.setScene(scene);
+            dialogStage.showAndWait();
+        }
+
+        private Button createColorButton(String color) {
+            Button button = new Button(color);
+            button.setStyle("-fx-background-color: " + color.toLowerCase() + "; -fx-text-fill: black;");
+            button.setOnAction(event -> {
+                selectedColor = color;
+                ((Stage) button.getScene().getWindow()).close();
+            });
+            return button;
+        }
+    }
+    private void chooseColor() {
+        ColorPickerDialog colorPicker = new ColorPickerDialog();
+        colorPicker.display();
+        String chosenColor = colorPicker.getSelectedColor();
+        if (chosenColor != null) {
+            cardTable.setColor(chosenColor);
+            // Actualizar la imagen de la carta en la tabla si es necesario
+            // tableImageView.setImage(new Image("file:path/to/color_changed_card_image_" + chosenColor.toLowerCase() + ".png"));
+        }
+    }
+
+    public void setMachineSayOne(boolean say){
+        this.machineSayOne=say;
+    }
+
+    public boolean isPlayHuman() {
+        return playHuman;
+    }
+
+    public boolean isTakecard() {
+        return takecard;
     }
 }

@@ -7,6 +7,7 @@
     <list default="true" id="1ee8ff40-bbdd-4aec-a3d2-cf5cc45130ec" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/controller/GameUnoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/controller/GameUnoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/card/Card.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/deck/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/deck/Deck.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/machine/ThreadPlayMachine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/machine/ThreadPlayMachine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/machine/ThreadSingUNOMachine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/eiscuno/model/machine/ThreadSingUNOMachine.java" afterDir="false" />
@@ -66,9 +67,9 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "HDGM",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/DARIO/Desktop/nuevo uno/eisc-uno-master",
+    "last_opened_file_path": "C:/Users/DARIO/Desktop/trabajar uno/eisc-uno-master",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -148,7 +149,8 @@
       <workItem from="1718396538903" duration="18400000" />
       <workItem from="1718462184195" duration="1374000" />
       <workItem from="1718673872030" duration="2433000" />
-      <workItem from="1718755187280" duration="6625000" />
+      <workItem from="1718755187280" duration="6939000" />
+      <workItem from="1718827576184" duration="25287000" />
     </task>
     <servers />
   </component>

@@ -34,7 +34,8 @@ public class Deck {
                     cardEnum.name().startsWith("TWO_WILD_DRAW_") ||
                     cardEnum.name().equals("FOUR_WILD_DRAW") ||
                     cardEnum.name().equals("WILD")) {
-                Card card = new Card(cardEnum.getFilePath(), getCardValue(cardEnum.name()), getCardColor(cardEnum.name()));
+                String effect = getCardEffect(cardEnum.name());
+                Card card = new Card(cardEnum.getFilePath(), getCardValue(cardEnum.name()), getCardColor(cardEnum.name()), effect);
                 deckOfCards.push(card);
 
                 // Print each card
@@ -115,5 +116,21 @@ public class Deck {
      */
     public boolean isEmpty() {
         return deckOfCards.isEmpty();
+    }
+
+    private String getCardEffect(String name) {
+        if (name.contains("TWO_WILD_DRAW")) {
+            return "+2";
+        } else if (name.equals("FOUR_WILD_DRAW")) {
+            return "+4";
+        } else if (name.equals("WILD")) {
+            return "WILD";
+        } else if (name.contains("SKIP")) {
+            return "SKIP";
+        } else if (name.contains("RESERVE")) {
+            return "RESERVE";
+        }{
+            return "NONE";
+        }
     }
 }

@@ -12,17 +12,18 @@ public class Card {
     private String color;
     private Image image;
     private ImageView cardImageView;
-
+    private String effect;
     /**
      * Constructs a Card with the specified image URL and name.
      *
      * @param url the URL of the card image
      * @param value of the card
      */
-    public Card(String url, String value, String color) {
+    public Card(String url, String value, String color, String effect) {
         this.url = url;
         this.value = value;
         this.color = color;
+        this.effect = effect;
         this.image = new Image(String.valueOf(getClass().getResource(url)));
         this.cardImageView = createCardImageView();
     }
@@ -64,5 +65,13 @@ public class Card {
 
     public String getColor() {
         return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getEffect() {
+        return effect;
     }
 }
