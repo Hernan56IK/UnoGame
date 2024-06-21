@@ -23,6 +23,10 @@ public class ThreadSingUNOMachine implements Runnable{
 
     @Override
     public void run(){
+        /*
+        synchronized (this) {
+            notify();  // Notifica a ThreadPlayMachine
+        }*/
         while (true){
             try {
                 Thread.sleep((long) (Math.random() * 3000));
@@ -40,14 +44,24 @@ public class ThreadSingUNOMachine implements Runnable{
     private void hasOneCardTheHumanPlayer(){
         if(cardsPlayer.size() == 1 && machineCanSayOneToPlayer){
             System.out.println("UNO AL JUGADOR");
-            threadPlayMachine.setHasPlayerPlayed(false);
+            //threadPlayMachine.setHasPlayerPlayed(false);
+            gameUnoController.setHasPlayerPlayed(false);
+            //*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
             gameUnoController.setHumanCanSayONE(false);
             gameUnoController.setPlayHuman(false);
             gameUnoController.setMachineSayOne(true);
+            /*
+            synchronized (this) {
+                notify();  // Notifica a ThreadPlayMachine
+            }*/
 
         }else if(machineCardsPlayer.size()==1 && machineCanSayOne){
             System.out.println("UNO PARA DEFENSA");
             gameUnoController.setHumanCanSayONEToMachine(false);
+            /*
+            synchronized (this) {
+                notify();  // Notifica a ThreadPlayMachine
+            }*/
         }
     }
 

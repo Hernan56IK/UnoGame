@@ -36,10 +36,19 @@ public class ThreadPlayMachine extends Thread {
             synchronized (threadSingUNOMachine) {
                 try {
                     threadSingUNOMachine.wait();  // Espera a que ThreadSingUNOMachine notifique
+                    //Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
+            /*
+            try {
+                //threadSingUNOMachine.wait();  // Espera a que ThreadSingUNOMachine notifique
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }*/
+
 
             if(hasPlayerPlayed){
                 try{
@@ -47,68 +56,69 @@ public class ThreadPlayMachine extends Thread {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                // Aqui iria la logica de colocar la carta
 
 
                 if(machineCanPlay){
                     boolean canPlay=canPutCard(gameUnoController.getCardTable());
                     if(canPlay){
-                        putCardOnTheTable();
+                        //gameUnoController.setPlayHuman(true);
                         hasPlayerPlayed = false;
-                        System.out.println("jugo");
-
-                        System.out.println(gameUnoController.isTakecard());
-                        System.out.println(gameUnoController.isPlayHuman());
+                        putCardOnTheTable();
+                        System.out.println("jugo1");
+                        gameUnoController.setTextAction("Maquina Jugó 1");
 
                     }else{
                         machinePlayer.addCard(deck.takeCard());
                         System.out.println("tomó1");
-                        threadSingUNOMachine.setMachineCanSayOne(true);
+                        gameUnoController.setTextAction("Maquina tomó 1 carta-1");
+
+                        gameUnoController.setMachineCanSayOne(true);
+
                         gameUnoController.setHumanCanSayONEToMachine(true);
                         gameUnoController.printCardsMachine();
                         boolean canPlay2=canPutCard(gameUnoController.getCardTable());
 
                         if (canPlay2){
-                            putCardOnTheTable();
+                            //gameUnoController.setPlayHuman(true);
                             hasPlayerPlayed = false;
-                            System.out.println("jugo");
-
-                            System.out.println(gameUnoController.isTakecard());
-                            System.out.println(gameUnoController.isPlayHuman());
+                            putCardOnTheTable();
+                            System.out.println("jugo2");
+                            gameUnoController.setTextAction("Maquina Jugó 2");
                         }else{
+
                             gameUnoController.setPlayHuman(true);
                             hasPlayerPlayed = false;
                             System.out.println("No pudo jugar");
-
-                            System.out.println(gameUnoController.isTakecard());
-                            System.out.println(gameUnoController.isPlayHuman());
+                            gameUnoController.setTextAction("Maquina no pudo jugar");
                         }
-                    }
 
+                    }
 
                 }else{
                     machinePlayer.addCard(deck.takeCard());
-                    threadSingUNOMachine.setMachineCanSayOne(true);
+                    //threadSingUNOMachine.setMachineCanSayOne(true);
+                    gameUnoController.setMachineCanSayOne(true);
+                    //********************************************
                     gameUnoController.setHumanCanSayONEToMachine(true);
                     gameUnoController.printCardsMachine();
                     try{
-                        Thread.sleep(2000);
+                        Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    //putCardOnTheTable();
-
                     gameUnoController.setPlayHuman(true);
                     hasPlayerPlayed = false;
                     machineCanPlay=true;
-                    System.out.println("tomo");
+                    System.out.println("tomó");
+                    gameUnoController.setTextAction("Maquina tomó 1 carta");
                     gameUnoController.setHumanCanSayONE(false);
+
                 }
             }
         }
     }
 
-    private void putCardOnTheTable(){
+    public void putCardOnTheTable(){
 
 
         Card tableCard=gameUnoController.getCardTable();
@@ -125,11 +135,16 @@ public class ThreadPlayMachine extends Thread {
                     gameUnoController.printCardsMachine();
                     gameUnoController.setCardTable(card);
                     System.out.println(card.getValue()+" "+card.getColor());
-                    handleCardEffect(card, tableCard);
+                    PauseTransition pause = new PauseTransition(Duration.seconds(2));
+                    pause.setOnFinished(e -> {
+                        gameUnoController.handleCardEffect(card, tableCard,machinePlayer);
+
+                    });
+                    pause.play();
                     foundCard=false;
-                    gameUnoController.setPlayHuman(true);
-                    Card tableCard2=gameUnoController.getCardTable();
-                    System.out.println(tableCard2.getColor()+" "+tableCard2.getValue());
+
+
+
                     break;
                 }
             }
@@ -144,9 +159,6 @@ public class ThreadPlayMachine extends Thread {
         this.machineCanPlay = machineCanPlay;
     }
 
-    public void setThreadSingUNOMachine(ThreadSingUNOMachine threadSingUNOMachine) {
-        this.threadSingUNOMachine = threadSingUNOMachine;
-    }
 
     private boolean canPutCard(Card tableCard){
         boolean can=false;
@@ -159,44 +171,4 @@ public class ThreadPlayMachine extends Thread {
         return can;
     }
 
-    private void handleCardEffect(Card card, Card tableCard) {
-        String effect = card.getEffect();
-        //String effect="+4";
-        System.out.println(effect);
-        Random random = new Random();
-        String[] colors = {"RED", "BLUE", "YELLOW", "GREEN"};
-        int randomIndex = random.nextInt(colors.length);
-        String randomText = colors[randomIndex];
-
-        switch (effect) {
-            case "WILD":
-                card.setColor(randomText);
-                table.addCardOnTheTable(card);
-                break;
-            case "+4":
-
-                card.setColor(randomText);
-                table.addCardOnTheTable(card);
-
-                if (effect.equals("+4")) {
-                    System.out.println("yes");
-                }
-                break;
-            case "+2":
-                //opponentDrawCards(2);
-                break;
-            case "SKIP", "RESERVE":
-                // Crear la pausa
-                PauseTransition pause = new PauseTransition(Duration.seconds(2)); // Esperar 2 segundos
-                pause.setOnFinished(event -> {
-                    putCardOnTheTable();
-                });
-                pause.play();
-
-                break;
-            default:
-                // No hay efecto especial
-                break;
-        }
-    }
 }

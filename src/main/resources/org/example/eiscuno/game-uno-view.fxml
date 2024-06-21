@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -30,7 +31,7 @@
    <right>
       <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button layoutX="24.0" layoutY="35.0" mnemonicParsing="false" onAction="#onHandleUno" prefHeight="112.0" prefWidth="158.0" style="-fx-background-color: TRANSPARENT; -fx-cursor: HAND;">
+            <Button layoutX="26.0" layoutY="78.0" mnemonicParsing="false" onAction="#onHandleUno" prefHeight="112.0" prefWidth="158.0" style="-fx-background-color: TRANSPARENT; -fx-cursor: HAND;">
                <graphic>
                   <ImageView fitHeight="93.0" fitWidth="115.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -38,6 +39,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
+            <TextField fx:id="textAction" editable="false" layoutX="6.0" layoutY="23.0" prefHeight="25.0" prefWidth="181.0" promptText="esperando jugada...." />
          </children>
       </Pane>
    </right>

@@ -1,5 +1,8 @@
 package org.example.eiscuno.model.deck;
 
+import org.example.eiscuno.controller.GameUnoController;
+import org.example.eiscuno.model.machine.ThreadPlayMachine;
+import org.example.eiscuno.model.table.Table;
 import org.example.eiscuno.model.unoenum.EISCUnoEnum;
 import org.example.eiscuno.model.card.Card;
 
@@ -11,11 +14,16 @@ import java.util.Stack;
  */
 public class Deck {
     private Stack<Card> deckOfCards;
+    private GameUnoController gameUnoController;
+    private Table table;
 
     /**
      * Constructs a new deck of Uno cards and initializes it.
      */
-    public Deck() {
+    public Deck(GameUnoController gameUnoController, Table table) {
+
+        this.table=table;
+        this.gameUnoController=gameUnoController;
         deckOfCards = new Stack<>();
         initializeDeck();
     }
@@ -35,7 +43,7 @@ public class Deck {
                     cardEnum.name().equals("FOUR_WILD_DRAW") ||
                     cardEnum.name().equals("WILD")) {
                 String effect = getCardEffect(cardEnum.name());
-                Card card = new Card(cardEnum.getFilePath(), getCardValue(cardEnum.name()), getCardColor(cardEnum.name()), effect);
+                Card card = new Card(cardEnum.getFilePath(), getCardValue(cardEnum.name()), getCardColor(cardEnum.name()), effect,gameUnoController,table);
                 deckOfCards.push(card);
 
                 // Print each card
