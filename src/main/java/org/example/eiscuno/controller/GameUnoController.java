@@ -79,15 +79,12 @@ public class GameUnoController {
         Thread t = new Thread(threadSingUNOMachine, "ThreadSingUNO");
 
         threadPlayMachine = new ThreadPlayMachine(this.table, this.machinePlayer, this.tableImageView, this,this.deck, this.threadSingUNOMachine); // Pasar referencia de GameUnoController
-        //threadPlayMachine.setThreadSingUNOMachine(threadSingUNOMachine); // Establecer referencia después de la creación
 
-        threadWinGame = new ThreadWinGame(this.humanPlayer, this.machinePlayer);
+        threadWinGame = new ThreadWinGame(this.humanPlayer, this.machinePlayer, this.deck, this);
         Thread w =new Thread(threadWinGame,"treadWinGame");
 
 
-        //t.setPriority(Thread.MAX_PRIORITY);  // Establecer máxima prioridad para ThreadSingUNOMachine
-        //threadPlayMachine.setPriority(Thread.NORM_PRIORITY);  // Establecer prioridad normal para ThreadPlayMachine
-        //w.setPriority(Thread.MIN_PRIORITY);
+
 
         t.start();
         threadPlayMachine.start();
@@ -250,7 +247,6 @@ public class GameUnoController {
             humanPlayer.addCard(deck.takeCard());
             printCardsHumanPlayer();
             humanCanSayONE=true;
-            //threadSingUNOMachine.setMachineCanSayOneToPlayer(true);
             takecard=false;
             if(!canPutCard(cardTable)){
                 takecard=true;
@@ -263,6 +259,10 @@ public class GameUnoController {
             playHuman=false;
             threadPlayMachine.setHasPlayerPlayed(true);
             takecard=true;
+            if(cardTable.getValue()=="SKIP"||cardTable.getValue()=="+2"||cardTable.getValue()=="S+4"||cardTable.getValue()=="WILD"||cardTable.getValue()=="RESERVE"){
+                playHuman=true;
+                threadPlayMachine.setHasPlayerPlayed(false);
+            }
         }
 
     }
@@ -334,27 +334,12 @@ public class GameUnoController {
                     System.out.println(card.getColor()+" "+card.getValue());
                     break;
                 }else{
+                    takecard=false;
                     setTextAction("Maquina pierde turno y toma 4");
                     setPlayHuman(false);
                     chooseColor(card,tableCard,player);
                     table.addCardOnTheTable(card);
                     drawCards(humanPlayer,4);
-                    /*
-                    try{
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }*/
-                    /*
-                    PauseTransition pause = new PauseTransition(Duration.seconds(2));
-                    pause.setOnFinished(e -> {
-                        System.out.println("Action resumed after 2 seconds.");
-                        System.out.println(card.getColor()+" "+card.getValue());
-                        threadPlayMachine.putCardOnTheTable();
-                    });
-                    pause.play();*/
-
-
                     System.out.println(card.getColor()+" "+card.getValue());
                     threadPlayMachine.setHasPlayerPlayed(true);
 
@@ -367,17 +352,11 @@ public class GameUnoController {
                     takecard=true;
                     break;
                 }else{
+                    takecard=false;
                     setTextAction("jugador pierde turno y toma 2");
                     setPlayHuman(false);
                     drawCards(humanPlayer,2);
                     threadPlayMachine.setHasPlayerPlayed(true);
-                    //threadPlayMachine.putCardOnTheTable();
-                    /*
-                    try{
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }*/
                     break;
                 }
             case "SKIP", "RESERVE":
@@ -388,21 +367,8 @@ public class GameUnoController {
                     takecard=true;
                     break;
                 }else{
+                    takecard=false;
                     setTextAction("Jugador pierde turno");
-/*
-                    try{
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }*/
-                    /*
-                    PauseTransition pause = new PauseTransition(Duration.seconds(2));
-                    pause.setOnFinished(e -> {
-                        setPlayHuman(false);
-                        threadPlayMachine.putCardOnTheTable();
-                    });
-                    pause.play();*/
-
                     setPlayHuman(false);
                     threadPlayMachine.setHasPlayerPlayed(true);
                     break;
@@ -536,5 +502,16 @@ public class GameUnoController {
     }
     public void setTextAction(String text){
         textAction.setText(text);
+    }
+
+    public void setRunningOneThread(boolean bool){
+        threadSingUNOMachine.setRunning(bool);
+    }
+    public void setRunningPlayMachineThread(boolean bool){
+        threadPlayMachine.setRunning(bool);
+    }
+
+    public void setTakecard(boolean takecard) {
+        this.takecard = takecard;
     }
 }

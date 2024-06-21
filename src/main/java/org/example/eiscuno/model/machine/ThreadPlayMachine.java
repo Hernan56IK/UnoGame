@@ -20,6 +20,7 @@ public class ThreadPlayMachine extends Thread {
     private boolean machineCanPlay=true;
     private Deck deck;
     private ThreadSingUNOMachine threadSingUNOMachine;
+    private boolean running=true;
 
     public ThreadPlayMachine(Table table, Player machinePlayer, ImageView tableImageView, GameUnoController gameUnoController, Deck deck, ThreadSingUNOMachine threadSingUNOMachine) {
         this.table = table;
@@ -31,24 +32,15 @@ public class ThreadPlayMachine extends Thread {
     }
 
     public void run() {
-        while (true){
+        while (running){
 
             synchronized (threadSingUNOMachine) {
                 try {
                     threadSingUNOMachine.wait();  // Espera a que ThreadSingUNOMachine notifique
-                    //Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            /*
-            try {
-                //threadSingUNOMachine.wait();  // Espera a que ThreadSingUNOMachine notifique
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }*/
-
 
             if(hasPlayerPlayed){
                 try{
@@ -68,6 +60,7 @@ public class ThreadPlayMachine extends Thread {
                         gameUnoController.setTextAction("Maquina Jugó 1");
 
                     }else{
+
                         machinePlayer.addCard(deck.takeCard());
                         System.out.println("tomó1");
                         gameUnoController.setTextAction("Maquina tomó 1 carta-1");
@@ -77,6 +70,11 @@ public class ThreadPlayMachine extends Thread {
                         gameUnoController.setHumanCanSayONEToMachine(true);
                         gameUnoController.printCardsMachine();
                         boolean canPlay2=canPutCard(gameUnoController.getCardTable());
+                        try{
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
 
                         if (canPlay2){
                             //gameUnoController.setPlayHuman(true);
@@ -90,15 +88,14 @@ public class ThreadPlayMachine extends Thread {
                             hasPlayerPlayed = false;
                             System.out.println("No pudo jugar");
                             gameUnoController.setTextAction("Maquina no pudo jugar");
+                            gameUnoController.setTakecard(true);
                         }
 
                     }
 
                 }else{
                     machinePlayer.addCard(deck.takeCard());
-                    //threadSingUNOMachine.setMachineCanSayOne(true);
                     gameUnoController.setMachineCanSayOne(true);
-                    //********************************************
                     gameUnoController.setHumanCanSayONEToMachine(true);
                     gameUnoController.printCardsMachine();
                     try{
@@ -135,12 +132,14 @@ public class ThreadPlayMachine extends Thread {
                     gameUnoController.printCardsMachine();
                     gameUnoController.setCardTable(card);
                     System.out.println(card.getValue()+" "+card.getColor());
+
                     PauseTransition pause = new PauseTransition(Duration.seconds(2));
                     pause.setOnFinished(e -> {
                         gameUnoController.handleCardEffect(card, tableCard,machinePlayer);
 
                     });
                     pause.play();
+                    gameUnoController.setTakecard(true);
                     foundCard=false;
 
 
@@ -171,4 +170,7 @@ public class ThreadPlayMachine extends Thread {
         return can;
     }
 
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
 }
