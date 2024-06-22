@@ -9,6 +9,9 @@ import org.example.eiscuno.view.Alert.AlertBox;
 import org.example.eiscuno.view.GameUnoStage;
 import java.util.ArrayList;
 
+/**
+ * The ThreadWinGame class represents the thread that handles the logic for checking the win condition in the Uno game.
+ */
 public class ThreadWinGame implements Runnable{
     private GameUnoController gameUnoController;
     private Player machinePlayer;
@@ -17,7 +20,14 @@ public class ThreadWinGame implements Runnable{
     private Deck DeckOfCards;
 
 
-
+    /**
+     * Constructor for the ThreadWinGame class.
+     *
+     * @param humanPlayer      the human player
+     * @param machinePlayer    the machine player
+     * @param DeckOfCards      the deck of cards
+     * @param gameUnoController the Uno game controller
+     */
     public ThreadWinGame(Player humanPlayer, Player machinePlayer,Deck DeckOfCards, GameUnoController gameUnoController){
         this.humanPlayer=humanPlayer;
         this.machinePlayer=machinePlayer;
@@ -25,6 +35,9 @@ public class ThreadWinGame implements Runnable{
         this.gameUnoController=gameUnoController;
     }
 
+    /**
+     * Method that runs when the thread starts.
+     */
     @Override
     public void run() {
         while(running){
@@ -36,8 +49,11 @@ public class ThreadWinGame implements Runnable{
             verifiedGame();
         }
 
-
     }
+
+    /**
+     * Verifies the game state to determine if the game has been won or if the deck is empty.
+     */
     private void verifiedGame(){
         int numsCardsMachine=machinePlayer.getCardsPlayer().size();
         int numsCardsHuman=humanPlayer.getCardsPlayer().size();
@@ -89,7 +105,12 @@ public class ThreadWinGame implements Runnable{
     }
 
 
-
+    /**
+     * Calculates the total value of the cards when the deck is empty.
+     *
+     * @param cards the list of cards
+     * @return the total value of the cards
+     */
     private int printCardValuesWhenDeckEmpty(ArrayList<Card> cards, Player player) {
         int total=0;
         for (Card card : cards) {
@@ -100,6 +121,12 @@ public class ThreadWinGame implements Runnable{
     }
 
 
+    /**
+     * Converts the card value from String to int.
+     *
+     * @param value the card value as String
+     * @return the card value as int
+     */
     private int convertCardValueToInt(String value) {
         try {
             return Integer.parseInt(value);
@@ -109,6 +136,9 @@ public class ThreadWinGame implements Runnable{
         }
     }
 
+    /**
+     * Stops the thread by setting the running flag to false.
+     */
     public void stopThread() {
         running = false;
     }

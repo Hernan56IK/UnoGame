@@ -12,6 +12,9 @@ import org.example.eiscuno.model.table.Table;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * The ThreadPlayMachine class represents the execution thread for the machine player in the Uno game.
+ */
 public class ThreadPlayMachine extends Thread implements observer, observable{
     private Table table;
     private Player machinePlayer;
@@ -23,6 +26,18 @@ public class ThreadPlayMachine extends Thread implements observer, observable{
     private ThreadSingUNOMachine threadSingUNOMachine;
     private boolean running=true;
 
+
+    /**
+     * Constructor for the ThreadPlayMachine class.
+     *
+     * @param table               the game table
+     * @param machinePlayer       the machine player
+     * @param tableImageView      the table image view
+     * @param gameUnoController   the Uno game controller
+     * @param deck                the card deck
+     * @param threadSingUNOMachine the thread for singing UNO
+     */
+
     public ThreadPlayMachine(Table table, Player machinePlayer, ImageView tableImageView, GameUnoController gameUnoController, Deck deck, ThreadSingUNOMachine threadSingUNOMachine) {
         this.table = table;
         this.machinePlayer = machinePlayer;
@@ -33,6 +48,9 @@ public class ThreadPlayMachine extends Thread implements observer, observable{
         observation = new ArrayList<observer>();
     }
 
+    /**
+     * Method that runs when the thread starts.
+     */
     public void run() {
         while (running){
 
@@ -120,6 +138,9 @@ public class ThreadPlayMachine extends Thread implements observer, observable{
         }
     }
 
+    /**
+     * Puts a card on the table if the conditions are met.
+     */
     public void putCardOnTheTable(){
 
 
@@ -155,15 +176,32 @@ public class ThreadPlayMachine extends Thread implements observer, observable{
         }
     }
 
+    /**
+     * Sets whether the player has played.
+     *
+     * @param hasPlayerPlayed true if the player has played, false otherwise
+     */
+
     public void setHasPlayerPlayed(boolean hasPlayerPlayed) {
         this.hasPlayerPlayed = hasPlayerPlayed;
     }
 
+    /**
+     * Sets whether the machine can play.
+     *
+     * @param machineCanPlay true if the machine can play, false otherwise
+     */
     public void setMachineCanPlay(boolean machineCanPlay) {
         this.machineCanPlay = machineCanPlay;
     }
 
 
+    /**
+     * Checks if the machine can put a card on the table.
+     *
+     * @param tableCard the card on the table
+     * @return true if the machine can put a card, false otherwise
+     */
     private boolean canPutCard(Card tableCard){
         boolean can=false;
         for(int i=0; i<machinePlayer.getCardsPlayer().size();i++){
@@ -175,21 +213,38 @@ public class ThreadPlayMachine extends Thread implements observer, observable{
         return can;
     }
 
+    /**
+     * Sets whether the thread is running.
+     *
+     * @param running true if the thread is running, false otherwise
+     */
     public void setRunning(boolean running) {
         this.running = running;
     }
 
     private ArrayList<observer> observation;
 
+    /**
+     * Adds an observer.
+     *
+     * @param a the observer to add
+     */
     public void enlace(observer a){
         observation.add(a);
     }
 
+    /**
+     * Notifies all observers.
+     */
     @Override
     public void notification() {
         for(observer a: observation){ a.update();}
     }
 
+
+    /**
+     * Updates the state of the observers.
+     */
     @Override
     public void update() {
         System.out.println("la maquina ha puesto una carta en el tablero");

@@ -30,6 +30,8 @@ import java.util.Random;
 
 /**
  * Controller class for the Uno game.
+ * @author Juan Camilo Jimenez, hernan Dario Garcia, James sanchez
+ * @version 2.0
  */
 public class GameUnoController {
     @FXML
@@ -201,6 +203,12 @@ public class GameUnoController {
         return -1;
     }
 
+    /**
+     * Finds the position of a specific card in the machine player's hand.
+     *
+     * @param card the card to find
+     * @return the position of the card, or -1 if not found
+     */
     public  Integer findPosCardsMachinePlayer(Card card) {
         for (int i = 0; i < this.machinePlayer.getCardsPlayer().size(); i++) {
             if (this.machinePlayer.getCardsPlayer().get(i).equals(card)) {
@@ -267,6 +275,12 @@ public class GameUnoController {
 
     }
 
+    /**
+     * Checks if the human player can put a card on the table.
+     *
+     * @param tableCard the card on the table
+     * @return true if the player can put a card, false otherwise
+     */
     private boolean canPutCard(Card tableCard){
         boolean can=false;
         for(int i=0; i<humanPlayer.getCardsPlayer().size();i++){
@@ -303,7 +317,11 @@ public class GameUnoController {
     }
 
 
-
+    /**
+     * Handles the exit button action.
+     *
+     * @param event The action event triggered by the exit button.
+     */
     @FXML
     void onHandleButtonExit(ActionEvent event) {
         GameUnoStage.deleteInstance();
@@ -311,6 +329,13 @@ public class GameUnoController {
 
 
 
+    /**
+     * Handles the effects of a card when played.
+     *
+     * @param card The card that is played.
+     * @param tableCard The card currently on the table.
+     * @param player The player who played the card.
+     */
     public void handleCardEffect(Card card, Card tableCard, Player player) {
         String effect=card.getEffect();
         switch (effect) {
@@ -390,13 +415,24 @@ public class GameUnoController {
         }
     }
 
+    /**
+     * Inner class for displaying a color picker dialog.
+     */
     public class ColorPickerDialog {
         private String selectedColor;
 
+        /**
+         * Gets the selected color from the dialog.
+         *
+         * @return The selected color.
+         */
         public String getSelectedColor() {
             return selectedColor;
         }
 
+        /**
+         * Displays the color picker dialog.
+         */
         public void display() {
             Stage dialogStage = new Stage();
             dialogStage.initModality(Modality.APPLICATION_MODAL);
@@ -415,6 +451,12 @@ public class GameUnoController {
             dialogStage.showAndWait();
         }
 
+        /**
+         * Creates a button for selecting a color.
+         *
+         * @param color The color represented by the button.
+         * @return The button for selecting the color.
+         */
         private Button createColorButton(String color) {
             Button button = new Button(color);
             button.setStyle("-fx-background-color: " + color.toLowerCase() + "; -fx-text-fill: black;");
@@ -425,6 +467,14 @@ public class GameUnoController {
             return button;
         }
     }
+
+    /**
+     * Allows the player to choose a color.
+     *
+     * @param card The card for which the color is chosen.
+     * @param tableCard The card currently on the table.
+     * @param player The player choosing the color.
+     */
     public void chooseColor(Card card, Card tableCard, Player player) {
         if (player.equals(humanPlayer)) {
             ColorPickerDialog colorPicker = new ColorPickerDialog();
@@ -447,7 +497,12 @@ public class GameUnoController {
 
     }
 
-
+    /**
+     * Draws a specified number of cards for a player.
+     *
+     * @param player The player drawing cards.
+     * @param numCards The number of cards to draw.
+     */
     public void drawCards(Player player, int numCards) {
         Platform.runLater(() -> {
             for (int i = 0; i < numCards; i++) {
@@ -464,53 +519,133 @@ public class GameUnoController {
     }
 
 
+    /**
+     * Sets whether the machine said "UNO".
+     *
+     * @param say Whether the machine said "UNO".
+     */
     public void setMachineSayOne(boolean say){
         this.machineSayOne=say;
     }
 
+    /**
+     * Checks if it is the human player's turn.
+     *
+     * @return True if it is the human player's turn, false otherwise.
+     */
     public boolean isPlayHuman() {
         return playHuman;
     }
 
+    /**
+     * Checks if the player can take a card.
+     *
+     * @return True if the player can take a card, false otherwise.
+     */
     public boolean isTakecard() {
         return takecard;
     }
 
+    /**
+     * Gets the human player.
+     *
+     * @return The human player.
+     */
     public Player getHumanPlayer() {
         return humanPlayer;
     }
 
+    /**
+     * Sets the card on the table.
+     *
+     * @param card the card to set on the table
+     */
     public void setCardTable(Card card){
         this.cardTable=card;
     }
 
+    /**
+     * Gets the card on the table.
+     *
+     * @return the card on the table
+     */
     public Card getCardTable() {
         return cardTable;
     }
 
+    /**
+     * Sets whether it is the human player's turn.
+     *
+     * @param playHuman true if it is the human player's turn, false otherwise
+     */
     public void setPlayHuman(boolean playHuman) {
         this.playHuman = playHuman;
     }
+
+    /**
+     * Sets whether the human player can say "UNO".
+     *
+     * @param humanCanSayONE true if the human player can say "UNO", false otherwise
+     */
     public void setHumanCanSayONE(boolean humanCanSayONE){this.humanCanSayONE=humanCanSayONE;}
+
+    /**
+     * Sets whether the human player can say "UNO" to the machine.
+     *
+     * @param humanCanSayONEToMachine true if the human player can say "UNO" to the machine, false otherwise
+     */
     public void setHumanCanSayONEToMachine(boolean humanCanSayONEToMachine){this.humanCanSayONEToMachine=humanCanSayONEToMachine;}
 
+    /**
+     * Sets whether the player has played.
+     *
+     * @param bool true if the player has played, false otherwise
+     */
     public void setHasPlayerPlayed(boolean bool){
         threadPlayMachine.setHasPlayerPlayed(bool);
     }
+
+    /**
+     * Sets whether the machine can say "UNO".
+     *
+     * @param bool true if the machine can say "UNO", false otherwise
+     */
     public void setMachineCanSayOne(boolean bool){
         threadSingUNOMachine.setMachineCanSayOne(bool);
     }
+
+    /**
+     * Sets the text action.
+     *
+     * @param text the text to set
+     */
     public void setTextAction(String text){
         textAction.setText(text);
     }
 
+    /**
+     * Sets whether the "UNO" thread is running.
+     *
+     * @param bool true if the "UNO" thread is running, false otherwise
+     */
     public void setRunningOneThread(boolean bool){
         threadSingUNOMachine.setRunning(bool);
     }
+
+    /**
+     * Sets whether the play machine thread is running.
+     *
+     * @param bool true if the play machine thread is running, false otherwise
+     */
     public void setRunningPlayMachineThread(boolean bool){
         threadPlayMachine.setRunning(bool);
     }
 
+    /**
+     * Sets whether a card should be taken.
+     *
+     * @param takecard true if a card should be taken, false otherwise
+     */
     public void setTakecard(boolean takecard) {
         this.takecard = takecard;
     }
