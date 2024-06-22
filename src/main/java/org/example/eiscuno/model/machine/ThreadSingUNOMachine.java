@@ -13,6 +13,7 @@ public class ThreadSingUNOMachine implements Runnable{
     private boolean machineCanSayOneToPlayer=true;
     private GameUnoController gameUnoController;
     private ThreadPlayMachine threadPlayMachine;
+    private boolean running=true;
 
     public ThreadSingUNOMachine(ArrayList<Card> cardsPlayer, ArrayList<Card> machineCardsPlayer, GameUnoController gameUnoController, ThreadPlayMachine threadPlayMachine){
         this.cardsPlayer = cardsPlayer;
@@ -23,9 +24,9 @@ public class ThreadSingUNOMachine implements Runnable{
 
     @Override
     public void run(){
-        while (true){
+        while (running){
             try {
-                Thread.sleep((long) (Math.random() * 2000));
+                Thread.sleep((long) (Math.random() * 3000));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -40,9 +41,11 @@ public class ThreadSingUNOMachine implements Runnable{
     private void hasOneCardTheHumanPlayer(){
         if(cardsPlayer.size() == 1 && machineCanSayOneToPlayer){
             System.out.println("UNO AL JUGADOR");
-            threadPlayMachine.setHasPlayerPlayed(false);
+            gameUnoController.setHasPlayerPlayed(false);
             gameUnoController.setHumanCanSayONE(false);
             gameUnoController.setPlayHuman(false);
+            gameUnoController.setMachineSayOne(true);
+
 
         }else if(machineCardsPlayer.size()==1 && machineCanSayOne){
             System.out.println("UNO PARA DEFENSA");
@@ -52,4 +55,8 @@ public class ThreadSingUNOMachine implements Runnable{
 
     public void setMachineCanSayOne(boolean machineCanSayOne){this.machineCanSayOne=machineCanSayOne;}
     public void setMachineCanSayOneToPlayer(boolean machineCanSayOneToPlayer){this.machineCanSayOneToPlayer=machineCanSayOneToPlayer;}
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
 }

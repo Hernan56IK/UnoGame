@@ -1,5 +1,8 @@
 package org.example.eiscuno.model.deck;
 
+import org.example.eiscuno.controller.GameUnoController;
+import org.example.eiscuno.model.machine.ThreadPlayMachine;
+import org.example.eiscuno.model.table.Table;
 import org.example.eiscuno.model.unoenum.EISCUnoEnum;
 import org.example.eiscuno.model.card.Card;
 
@@ -11,11 +14,16 @@ import java.util.Stack;
  */
 public class Deck {
     private Stack<Card> deckOfCards;
+    private GameUnoController gameUnoController;
+    private Table table;
 
     /**
      * Constructs a new deck of Uno cards and initializes it.
      */
-    public Deck() {
+    public Deck(GameUnoController gameUnoController, Table table) {
+
+        this.table=table;
+        this.gameUnoController=gameUnoController;
         deckOfCards = new Stack<>();
         initializeDeck();
     }
@@ -34,8 +42,12 @@ public class Deck {
                     cardEnum.name().startsWith("TWO_WILD_DRAW_") ||
                     cardEnum.name().equals("FOUR_WILD_DRAW") ||
                     cardEnum.name().equals("WILD")) {
-                Card card = new Card(cardEnum.getFilePath(), getCardValue(cardEnum.name()), getCardColor(cardEnum.name()));
+                String effect = getCardEffect(cardEnum.name());
+                Card card = new Card(cardEnum.getFilePath(), getCardValue(cardEnum.name()), getCardColor(cardEnum.name()), effect,gameUnoController,table);
                 deckOfCards.push(card);
+
+                // Print each card
+                //System.out.println(card.getValue() + " " + card.getColor());
             }
         }
         Collections.shuffle(deckOfCards);
@@ -62,23 +74,33 @@ public class Deck {
             return "8";
         } else if (name.endsWith("9")){
             return "9";
+        } else if (name.contains("RESERVE")) {
+            return "RESERVE";
+        } else if (name.contains("TWO_WILD_DRAW")) {
+            return "+2";
+        } else if (name.equals("FOUR_WILD_DRAW")) {
+            return "+4";
+        } else if (name.equals("WILD")) {
+            return "WILD";
+        } else if (name.contains("SKIP")) {
+            return "SKIP";
         } else {
-            return null;
+            return "NON_VALUE";
         }
 
     }
 
     private String getCardColor(String name){
-        if(name.startsWith("GREEN")){
+        if(name.contains("GREEN")){
             return "GREEN";
-        } else if(name.startsWith("YELLOW")){
+        } else if(name.contains("YELLOW")){
             return "YELLOW";
-        } else if(name.startsWith("BLUE")){
+        } else if(name.contains("BLUE")){
             return "BLUE";
-        } else if(name.startsWith("RED")){
+        } else if(name.contains("RED")){
             return "RED";
         } else {
-            return null;
+            return "NON_COLOR";
         }
     }
 
@@ -102,5 +124,21 @@ public class Deck {
      */
     public boolean isEmpty() {
         return deckOfCards.isEmpty();
+    }
+
+    private String getCardEffect(String name) {
+        if (name.contains("TWO_WILD_DRAW")) {
+            return "+2";
+        } else if (name.equals("FOUR_WILD_DRAW")) {
+            return "+4";
+        } else if (name.equals("WILD")) {
+            return "WILD";
+        } else if (name.contains("SKIP")) {
+            return "SKIP";
+        } else if (name.contains("RESERVE")) {
+            return "RESERVE";
+        }{
+            return "NONE";
+        }
     }
 }

@@ -42,6 +42,7 @@ public class GameUnoStage extends Stage {
     public static void deleteInstance() {
         GameUnoStageHolder.INSTANCE.close();
         GameUnoStageHolder.INSTANCE = null;
+
     }
 
     /**
