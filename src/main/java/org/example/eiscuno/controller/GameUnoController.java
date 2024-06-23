@@ -112,7 +112,7 @@ public class GameUnoController {
 
         String cardValue=cardTable.getValue();
         String cardColor=cardTable.getColor();
-        System.out.println(cardValue+" "+cardColor);
+        //System.out.println(cardValue+" "+cardColor);
 
 
 
@@ -170,7 +170,7 @@ public class GameUnoController {
 
             for (int i = 0; i < currentVisibleCardsMachinePlayer.length; i++) {
                 Card card = currentVisibleCardsMachinePlayer[i];
-                System.out.println(card.getValue()+" "+card.getColor()+" "+i+" carta mano maquina");
+                //System.out.println(card.getValue()+" "+card.getColor()+" "+i+" carta mano maquina");
             }
 
             for (int i = 0; i < columns; i++) {
@@ -250,7 +250,7 @@ public class GameUnoController {
      */
     @FXML
     void onHandleTakeCard(ActionEvent event) {
-        System.out.println(takecard);
+        //System.out.println(takecard);
         if (playHuman && takecard){
             humanPlayer.addCard(deck.takeCard());
             printCardsHumanPlayer();
@@ -303,14 +303,16 @@ public class GameUnoController {
         int numCardsHumaPlayer = humanPlayer.getCardsPlayer().size();
 
         if(numCardsMachinePlayer==1 && humanCanSayONEToMachine){
-            System.out.println("JUGADOR GRITA UNO A LA MAQUINA!");
+            //System.out.println("JUGADOR GRITA UNO A LA MAQUINA!");
+            setTextAction("JUGADOR GRITA UNO A LA MAQUINA!");
             playHuman=false;
             threadPlayMachine.setHasPlayerPlayed(true);
             threadPlayMachine.setMachineCanPlay(false);
             threadSingUNOMachine.setMachineCanSayOne(false);
 
         }else if(numCardsHumaPlayer==1 && humanCanSayONE){
-            System.out.println("JUGADOR GRITA UNO!");
+            //System.out.println("JUGADOR GRITA UNO!");
+            setTextAction("JUGADOR GRITA UNO!");
             threadSingUNOMachine.setMachineCanSayOneToPlayer(false);
 
         }
@@ -343,7 +345,7 @@ public class GameUnoController {
                 chooseColor(card,tableCard,player);
                 if(player==humanPlayer){
                     playHuman=false;
-                    System.out.println(cardTable.getColor()+" "+card.getValue());
+                    //System.out.println(cardTable.getColor()+" "+card.getValue());
                     threadPlayMachine.setHasPlayerPlayed(true);
                 }
                 break;
@@ -356,7 +358,7 @@ public class GameUnoController {
                     chooseColor(card,tableCard,player);
                     table.addCardOnTheTable(card);
                     drawCards(machinePlayer,4);
-                    System.out.println(card.getColor()+" "+card.getValue());
+                    //System.out.println(card.getColor()+" "+card.getValue());
                     break;
                 }else{
                     takecard=false;
@@ -365,7 +367,7 @@ public class GameUnoController {
                     chooseColor(card,tableCard,player);
                     table.addCardOnTheTable(card);
                     drawCards(humanPlayer,4);
-                    System.out.println(card.getColor()+" "+card.getValue());
+                    //System.out.println(card.getColor()+" "+card.getValue());
                     threadPlayMachine.setHasPlayerPlayed(true);
 
                     break;
@@ -401,15 +403,15 @@ public class GameUnoController {
             default:
                 if (player==humanPlayer){
                     playHuman=false;
-                    System.out.println(cardTable.getColor()+" "+card.getValue());
+                    //System.out.println(cardTable.getColor()+" "+card.getValue());
                     threadPlayMachine.setHasPlayerPlayed(true);
                     break;
                 }else{
                     setPlayHuman(true);
                     Card tableCard2=getCardTable();
                     threadPlayMachine.setHasPlayerPlayed(false);
-                    System.out.println(tableCard2.getColor()+" "+tableCard2.getValue());
-                    System.out.println("si esta llegando aqui");
+                    //System.out.println(tableCard2.getColor()+" "+tableCard2.getValue());
+                    //System.out.println("si esta llegando aqui");
                 }
 
         }

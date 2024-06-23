@@ -81,13 +81,13 @@ public class ThreadPlayMachine extends Thread{
                         observable.addObserver(obs);
                         observable.notification();
                         observable.deleteObserver(obs);
-                        System.out.println("jugo1");
+                        //System.out.println("jugo1");
                         gameUnoController.setTextAction("Maquina Jugó 1");
 
                     }else{
 
                         machinePlayer.addCard(deck.takeCard());
-                        System.out.println("tomó1");
+                        //System.out.println("tomó1");
                         gameUnoController.setTextAction("Maquina tomó 1 carta-1");
 
                         gameUnoController.setMachineCanSayOne(true);
@@ -109,13 +109,13 @@ public class ThreadPlayMachine extends Thread{
                             observable.addObserver(obs);
                             observable.notification();
                             observable.deleteObserver(obs);
-                            System.out.println("jugo2");
+                            //System.out.println("jugo2");
                             gameUnoController.setTextAction("Maquina Jugó 2");
                         }else{
 
                             gameUnoController.setPlayHuman(true);
                             hasPlayerPlayed = false;
-                            System.out.println("No pudo jugar");
+                            //System.out.println("No pudo jugar");
                             gameUnoController.setTextAction("Maquina no pudo jugar");
                             gameUnoController.setTakecard(true);
                         }
@@ -135,7 +135,7 @@ public class ThreadPlayMachine extends Thread{
                     gameUnoController.setPlayHuman(true);
                     hasPlayerPlayed = false;
                     machineCanPlay=true;
-                    System.out.println("tomó");
+                    //System.out.println("tomó");
                     gameUnoController.setTextAction("Maquina tomó 1 carta");
                     gameUnoController.setHumanCanSayONE(false);
 
@@ -163,7 +163,7 @@ public class ThreadPlayMachine extends Thread{
                     machinePlayer.removeCard(gameUnoController.findPosCardsMachinePlayer(card));
                     gameUnoController.printCardsMachine();
                     gameUnoController.setCardTable(card);
-                    System.out.println(card.getValue()+" "+card.getColor());
+                    //System.out.println(card.getValue()+" "+card.getColor());
 
                     PauseTransition pause = new PauseTransition(Duration.seconds(2));
                     pause.setOnFinished(e -> {

@@ -58,7 +58,7 @@ public class ThreadWinGame implements Runnable{
         int numsCardsMachine=machinePlayer.getCardsPlayer().size();
         int numsCardsHuman=humanPlayer.getCardsPlayer().size();
         if(numsCardsHuman==0){
-            System.out.println("HAS GANADO ESTA PARTIDA");
+            //System.out.println("HAS GANADO ESTA PARTIDA");
             Platform.runLater(() -> {
                 GameUnoStage.deleteInstance();
                 new AlertBox().showConfirm("FELICIDADES GANASTE!", "Tiene 0 cartas en mano ","Jugador gana por quedarse sin cartas");
@@ -67,7 +67,7 @@ public class ThreadWinGame implements Runnable{
             gameUnoController.setRunningPlayMachineThread(false);
             stopThread();
         }else if(numsCardsMachine==0){
-            System.out.println("HAS PERDIDO... HASTA LA PROXIMA");
+            //System.out.println("HAS PERDIDO... HASTA LA PROXIMA");
 
             Platform.runLater(() -> {
                 GameUnoStage.deleteInstance();
@@ -81,8 +81,8 @@ public class ThreadWinGame implements Runnable{
             System.out.println("Deck Vacio");
             int pointsMachine=printCardValuesWhenDeckEmpty(machinePlayer.getCardsPlayer(), machinePlayer);
             int pointsHuman=printCardValuesWhenDeckEmpty(humanPlayer.getCardsPlayer(), humanPlayer);
-            System.out.println("Maquina: "+pointsMachine+" Puntos");
-            System.out.println("Jugador: "+pointsHuman+" Puntos");
+            //System.out.println("Maquina: "+pointsMachine+" Puntos");
+            //System.out.println("Jugador: "+pointsHuman+" Puntos");
             stopThread();
             Platform.runLater(() -> {
                 if(pointsMachine<pointsHuman){

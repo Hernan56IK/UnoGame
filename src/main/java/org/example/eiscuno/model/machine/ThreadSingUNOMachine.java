@@ -41,7 +41,7 @@ public class ThreadSingUNOMachine implements Runnable{
     public void run(){
         while (running){
             try {
-                Thread.sleep((long) (Math.random() * 3000));
+                Thread.sleep((long) (Math.random() * 5000));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -58,7 +58,8 @@ public class ThreadSingUNOMachine implements Runnable{
      */
     private void hasOneCardTheHumanPlayer(){
         if(cardsPlayer.size() == 1 && machineCanSayOneToPlayer){
-            System.out.println("UNO AL JUGADOR");
+            //System.out.println("UNO AL JUGADOR");
+            gameUnoController.setTextAction("UNO AL JUGADOR");
             gameUnoController.setHasPlayerPlayed(false);
             gameUnoController.setHumanCanSayONE(false);
             gameUnoController.setPlayHuman(false);
@@ -66,7 +67,8 @@ public class ThreadSingUNOMachine implements Runnable{
 
 
         }else if(machineCardsPlayer.size()==1 && machineCanSayOne){
-            System.out.println("UNO PARA DEFENSA");
+            //System.out.println("UNO PARA DEFENSA");
+            gameUnoController.setTextAction("UNO PARA DEFENSA");
             gameUnoController.setHumanCanSayONEToMachine(false);
         }
     }
