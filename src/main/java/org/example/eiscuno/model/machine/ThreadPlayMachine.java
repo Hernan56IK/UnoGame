@@ -6,16 +6,15 @@ import javafx.util.Duration;
 import org.example.eiscuno.controller.GameUnoController;
 import org.example.eiscuno.model.card.Card;
 import org.example.eiscuno.model.deck.Deck;
+import org.example.eiscuno.model.machine.observers.observableClass;
+import org.example.eiscuno.model.machine.observers.observerExample;
 import org.example.eiscuno.model.player.Player;
 import org.example.eiscuno.model.table.Table;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * The ThreadPlayMachine class represents the execution thread for the machine player in the Uno game.
  */
-public class ThreadPlayMachine extends Thread implements observer, observable{
+public class ThreadPlayMachine extends Thread{
     private Table table;
     private Player machinePlayer;
     private ImageView tableImageView;
@@ -25,6 +24,8 @@ public class ThreadPlayMachine extends Thread implements observer, observable{
     private Deck deck;
     private ThreadSingUNOMachine threadSingUNOMachine;
     private boolean running=true;
+
+    observableClass observable;
 
 
     /**
@@ -45,7 +46,7 @@ public class ThreadPlayMachine extends Thread implements observer, observable{
         this.threadSingUNOMachine=threadSingUNOMachine;
         this.gameUnoController = gameUnoController;
         this.deck=deck;
-        observation = new ArrayList<observer>();
+        observable = new observableClass();
     }
 
     /**
@@ -75,9 +76,11 @@ public class ThreadPlayMachine extends Thread implements observer, observable{
                     if(canPlay){
                         //gameUnoController.setPlayHuman(true);
                         hasPlayerPlayed = false;
-
                         putCardOnTheTable();
-                        update();
+                        observerExample obs = new observerExample();
+                        observable.addObserver(obs);
+                        observable.notification();
+                        observable.deleteObserver(obs);
                         System.out.println("jugo1");
                         gameUnoController.setTextAction("Maquina Jugó 1");
 
@@ -102,7 +105,10 @@ public class ThreadPlayMachine extends Thread implements observer, observable{
                             //gameUnoController.setPlayHuman(true);
                             hasPlayerPlayed = false;
                             putCardOnTheTable();
-                            update();
+                            observerExample obs = new observerExample();
+                            observable.addObserver(obs);
+                            observable.notification();
+                            observable.deleteObserver(obs);
                             System.out.println("jugo2");
                             gameUnoController.setTextAction("Maquina Jugó 2");
                         }else{
@@ -222,31 +228,4 @@ public class ThreadPlayMachine extends Thread implements observer, observable{
         this.running = running;
     }
 
-    private ArrayList<observer> observation;
-
-    /**
-     * Adds an observer.
-     *
-     * @param a the observer to add
-     */
-    public void enlace(observer a){
-        observation.add(a);
-    }
-
-    /**
-     * Notifies all observers.
-     */
-    @Override
-    public void notification() {
-        for(observer a: observation){ a.update();}
-    }
-
-
-    /**
-     * Updates the state of the observers.
-     */
-    @Override
-    public void update() {
-        System.out.println("la maquina ha puesto una carta en el tablero");
-    }
 }
