@@ -2,6 +2,12 @@ package org.example.eiscuno.model.card;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.example.eiscuno.controller.GameUnoController;
+import org.example.eiscuno.model.machine.ThreadPlayMachine;
+import org.example.eiscuno.model.player.Player;
+import org.example.eiscuno.model.table.Table;
+
+import java.util.Random;
 
 /**
  * Represents a card in the Uno game.
@@ -12,6 +18,13 @@ public class Card {
     private String color;
     private Image image;
     private ImageView cardImageView;
+    private String effect;
+    private GameUnoController gameUnoController;
+
+    private Table table;
+
+    private ThreadPlayMachine threadPlayMachine;
+
 
     /**
      * Constructs a Card with the specified image URL and name.
@@ -19,12 +32,16 @@ public class Card {
      * @param url the URL of the card image
      * @param value of the card
      */
-    public Card(String url, String value, String color) {
+    public Card(String url, String value, String color, String effect, GameUnoController gameUnoController, Table table) {
         this.url = url;
         this.value = value;
         this.color = color;
+        this.effect = effect;
         this.image = new Image(String.valueOf(getClass().getResource(url)));
         this.cardImageView = createCardImageView();
+        this.gameUnoController=gameUnoController;
+        this.table=table;
+
     }
 
     /**
@@ -65,4 +82,13 @@ public class Card {
     public String getColor() {
         return color;
     }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getEffect() {
+        return effect;
+    }
+
 }

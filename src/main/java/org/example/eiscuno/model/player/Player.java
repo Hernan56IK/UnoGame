@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Represents a player in the Uno game.
  */
-public class Player implements IPlayer {
+public class Player implements IPlayer, Cloneable{
     private ArrayList<Card> cardsPlayer;
     private String typePlayer;
 
@@ -60,7 +60,19 @@ public class Player implements IPlayer {
         return cardsPlayer.get(index);
     }
 
+
+
     public String getTypePlayer() {
         return typePlayer;
     }
+    /**
+     public void setTypePlayer(String typePlayer2) {
+     this.typePlayer = typePlayer2;
+     }
+
+     @Override
+     protected Object clone() throws CloneNotSupportedException{
+     Player clonePlayer = new Player(getTypePlayer());
+     return super.clone();
+     }**/
 }
