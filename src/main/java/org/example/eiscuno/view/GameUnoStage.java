@@ -3,6 +3,7 @@ package org.example.eiscuno.view;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class GameUnoStage extends Stage {
         setTitle("EISC Uno"); // Sets the title of the stage
         setScene(scene); // Sets the scene for the stage
         setResizable(false); // Disallows resizing of the stage
+        getIcons().add(new Image(String.valueOf(getClass().getResource("/org/example/eiscuno/images/uno.png"))));
         show(); // Displays the stage
     }
 
